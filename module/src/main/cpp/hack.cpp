@@ -16,18 +16,28 @@
 #include "imgui_impl_android.h"
 #include "imgui_impl_opengl3.h"
 #include "MemoryPatch.h"
+#include <fonts/ShantellSans.h>
+#include <fonts/FontAwesome6_regular.h>
+#include <fonts/GoogleSans.h>
 
+#include <fonts/IconsFontAwesome6.h>
+
+#include <fonts/FontAwesome6_solid.h>
 static int                  g_GlHeight, g_GlWidth;
 static bool                 g_IsSetup = false;
 static std::string          g_IniFileName = "";
 static utils::module_info   g_TargetModule{};
 
+void *getAbsAddress(uintptr_t offset) {
+    uintptr_t base = reinterpret_cast<uintptr_t>(g_TargetModule.start_address);
+    return reinterpret_cast<void*>(base + offset);
+}
+#include "input.h"
+#define HOOK(t,r,o) utils::hook(getAbsAddress(t),(func_t)r,(func_t*)&o)
 HOOKAF(void, Input, void *thiz, void *ex_ab, void *ex_ac) {
     origInput(thiz, ex_ab, ex_ac);
     ImGui_ImplAndroid_HandleInputEvent((AInputEvent *)thiz);
-    return;
-}
-
+    return;}
 void SetupImGui() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -38,11 +48,34 @@ void SetupImGui() {
 
     ImGui_ImplAndroid_Init(nullptr);
     ImGui_ImplOpenGL3_Init("#version 300 es");
-    ImGui::StyleColorsLight();
+    ImGui::StyleColorsDark();
+	io.Fonts->Clear();
+    float fontBaseSize = 28.4f;
 
+    static const ImWchar rangesBasic[] = {
+        0x0020,0x00FF, // Basic Latin + Latin Supplement
+        0x03BC,0x03BC, // micro
+        0x03C3,0x03C3, // small sigma
+        0x2013,0x2013, // en dash
+        0x2264,0x2264, // less-than or equal to
+        0,
+    };
     ImFontConfig font_cfg;
-    font_cfg.SizePixels = 22.0f;
-    io.Fonts->AddFontDefault(&font_cfg);
+    io.Fonts->AddFontFromMemoryCompressedTTF(GoogleSans_compressed_data, GoogleSans_compressed_size, fontBaseSize, &font_cfg, rangesBasic);
+
+
+    float iconFontSize = fontBaseSize * 2.0f / 3.0f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+    static const ImWchar icons_ranges[] = {
+        ICON_MIN_FA,ICON_MAX_16_FA,
+        0
+    };
+    ImFontConfig icons_config;
+    icons_config.MergeMode = true;
+    icons_config.PixelSnapH = true;
+    icons_config.GlyphMinAdvanceX = iconFontSize;
+    io.Fonts->AddFontFromMemoryCompressedTTF(fa_solid_compressed_data, fa_solid_compressed_size, iconFontSize, &icons_config, icons_ranges);
+
+    
 
     ImGui::GetStyle().ScaleAllSizes(3.0f);
 }
@@ -62,9 +95,33 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplAndroid_NewFrame(g_GlWidth, g_GlHeight);
     ImGui::NewFrame();
+    if (ImGui::Begin("Mod by AMIYA | telegram: @MyAlessa", nullptr))
+     { 
+      if (ImGui::BeginTabBar("telegram: @MyAlessa", ImGuiTabBarFlags_None)) {
+    if (ImGui::BeginTabItem("Hack Menu"))
+    {	
 
-    ImGui::ShowDemoWindow();
+      ImGui::EndTabItem(); 
+       }
 
+			       
+			       
+			       
+
+    if (ImGui::BeginTabItem("Hack Multiplier")){
+	    
+
+        ImGui::EndTabItem(); 
+       }
+
+        ImGui::EndTabBar(); 
+      }
+    
+     
+    
+	ImGui::End();
+    
+  }
     ImGui::EndFrame();
     ImGui::Render();
     glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
@@ -81,6 +138,12 @@ void hack_start(const char *_game_data_dir) {
     LOGI("%s: %p - %p",TargetLibName, g_TargetModule.start_address, g_TargetModule.end_address);
 
     // TODO: hooking/patching here
+
+
+
+
+
+
     
 }
 

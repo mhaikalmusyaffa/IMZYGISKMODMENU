@@ -32,6 +32,17 @@ void *getAbsAddress(uintptr_t offset) {
     uintptr_t base = reinterpret_cast<uintptr_t>(g_TargetModule.start_address);
     return reinterpret_cast<void*>(base + offset);
 }
+
+
+//here
+
+
+
+
+
+
+
+
 #include "input.h"
 #define HOOK(t,r,o) utils::hook(getAbsAddress(t),(func_t)r,(func_t*)&o)
 HOOKAF(void, Input, void *thiz, void *ex_ab, void *ex_ac) {
@@ -101,6 +112,12 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
     if (ImGui::BeginTabItem("Hack Menu"))
     {	
 
+
+
+
+
+
+
       ImGui::EndTabItem(); 
        }
 
@@ -109,6 +126,14 @@ EGLBoolean hook_eglSwapBuffers(EGLDisplay dpy, EGLSurface surface) {
 			       
 
     if (ImGui::BeginTabItem("Hack Multiplier")){
+
+
+
+
+
+
+
+
 	    
 
         ImGui::EndTabItem(); 

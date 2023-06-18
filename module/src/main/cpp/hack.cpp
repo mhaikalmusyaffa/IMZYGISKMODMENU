@@ -16,13 +16,13 @@
 #include "imgui_impl_android.h"
 #include "imgui_impl_opengl3.h"
 #include "MemoryPatch.h"
-#include <fonts/ShantellSans.h>
-#include <fonts/FontAwesome6_regular.h>
-#include <fonts/GoogleSans.h>
+#include <Fonts/ShantellSans.h>
+#include <Fonts/FontAwesome6_regular.h>
+#include <Fonts/GoogleSans.h>
 
-#include <fonts/IconsFontAwesome6.h>
+#include <Fonts/IconsFontAwesome6.h>
 
-#include <fonts/FontAwesome6_solid.h>
+#include <Fonts/FontAwesome6_solid.h>
 static int                  g_GlHeight, g_GlWidth;
 static bool                 g_IsSetup = false;
 static std::string          g_IniFileName = "";

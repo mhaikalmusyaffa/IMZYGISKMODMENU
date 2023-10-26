@@ -3,6 +3,6 @@
 
 // TODO: change this
 #define TargetLibName "libil2cpp.so"
-#define GamePackageName "com.garena.game.codm"
+#define GamePackageName "com.miniclip.agar.io"
 
 #endif //ZYGISK_IMGUI_MODMENU_GAME_H
